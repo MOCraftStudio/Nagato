@@ -1,71 +1,142 @@
 package org.mocraft.Nagato;
 
-import javax.swing.JTextArea;
-
+import org.mocraft.Nagato.TypeDefine.WebStatus;
 import org.sikuli.script.Location;
 import org.sikuli.script.Mouse;
 import org.sikuli.script.Pattern;
 
 public class NagatoSystem extends Nagato {
 
-	public boolean checkCat() {
+	private String imgCat = "img/Global/cat.png";
+	private String imgTv = "img/Global/teamviewer.png";
+	private String imgNonInternet = "img/Global/nonInternet.png";
+	private String imgGameStart = "img/Global/gameStart.png";
+	private String imgAnchor = "img/Port/anchor.png";
+	private String imgPort = "img/Global/port.png";
+
+	private String imgF5 = "img/Global/f5.png";
+
+	public WebStatus detectWebAndFix() {
 		try {
-			log(guiMain.logArea, "Checking Status...");
-			if (imgExists("img/Global/cat.png") || imgExists("img/Global/nonInternet.png")) {
-				log(guiMain.logArea, "Detected Cat Error...");
-				click("img/Global/f5.png");
-				return checkCat();
-			} else if(imgExists("img/Global/gameStart.png")) {
-				log(guiMain.logArea, "Entering Game...");
-				click("img/Global/gameStart.png");
-				return false;
-			} else if(imgExists("img/Port/anchor.png")) {
-				log(guiMain.logArea, "Entered Game!");
-				return false;
-			} else if(imgExists("img/Global/port.png")) {
-				log(guiMain.logArea, "Redirecting To Port...");
-				click("img/Global/port.png");
-				return false;
+			guiMain.log("> Detecting Web Status...");
+			if (imgExists(imgNonInternet)) {
+				guiMain.log(">> Detected Website offline!");
+				processNonInternet();
+			} else if (imgExists(imgCat)) {
+				guiMain.log(">> Detected Cat Error!");
+				processCat();
+			} else if (imgExists(imgTv)) {
+				guiMain.log(">> Detected TeamViewer Form!");
+				processTv();
+			} else if (imgExists(imgGameStart)) {
+				guiMain.log(">> Detected Game Start Form!");
+				processGameStart();
+			} else if (imgExists(imgAnchor) || imgExists(imgPort)) {
+				guiMain.log(">> Detected Game Process Normal!");
+				return WebStatus.Normal;
 			} else {
-				log(guiMain.logArea, "Connected Failed, Retry...");
-				return checkCat();
+				guiMain.log(">> Detected Unknown Status! Retring...");
 			}
 		} catch (Exception e) {
-			checkCat();
+			e.printStackTrace();
+			guiMain.log(">> Unknow Error Occoured! Retry...");
 		}
-		return true;
+		return detectWebAndFix();
 	}
 
-	public boolean checkAnchor() throws Exception {
-		log(guiMain.logArea, "Locating Anchor...");
-		if(imgExists("img/Port/anchor.png")) {
-			screen.hover("img/Port/anchor.png");
-			anchor = new Location(Mouse.at());
-			log(guiMain.logArea, "Anchor Located!");
-			return true;
-		} else {
-			log(guiMain.logArea, "Unable Locate Anchor, Retry...");
-			return checkAnchor();
+	public void cycleDetectWebAndFix() {
+		try {
+			guiMain.log("Cycle Dectecting Web Status...");
+			if (imgExists(imgNonInternet)) {
+				guiMain.log(">> Detected Website offline!");
+				processNonInternet();
+			} else if (imgExists(imgCat)) {
+				guiMain.log(">> Detected Cat Error!");
+				processCat();
+			} else if (imgExists(imgTv)) {
+				guiMain.log(">> Detected TeamViewer Form!");
+				processTv();
+			} else {
+				return;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			guiMain.log(">> Unknow Error Occoured! Retry...");
+			cycleDetectWebAndFix();
 		}
 	}
 	
-	public void log(JTextArea area, String msg) {
-		area.setText(area.getText() + msg + "\n");
+	private void processNonInternet() throws Exception {
+		guiMain.log(">>> Solving NonInternet Error...");
+		while (imgExactExists(imgNonInternet)) {
+			guiMain.log(">> Reflashing Web...");
+			click(imgF5);
+		}
+		guiMain.log(">>> NonInternet Error Solved!");
 	}
 
+	private void processCat() throws Exception {
+		guiMain.log(">>> Solving Cat Error...");
+		while (imgExactExists(imgCat)) {
+			guiMain.log(">>> Reflashing Web...");
+			click(imgF5);
+			if (imgExactExists(imgCat)) {
+				guiMain.log(">>> Cat Error UnSolved! Retry Atfer Minute.");
+				screen.wait(60);
+			}
+		}
+		guiMain.log(">>> Cat Error Solved!");
+	}
+
+	private void processTv() throws Exception {
+		guiMain.log(">>> Solving Tv Form...");
+		while (imgExactExists(imgTv)) {
+			guiMain.log(">>> Exiting Tv Form...");
+			click("img/Global/Yes" + (imgExactExists("img/Global/Yes.png") ? "" : "-select") + ".png");
+		}
+		guiMain.log(">>> Tv Form Solved!");
+	}
+
+	private void processGameStart() throws Exception {
+		guiMain.log(">>> Solving GameStart Form...");
+		while (imgExactExists(imgGameStart)) {
+			guiMain.log(">>> Entering Game...");
+			click(imgGameStart);
+		}
+		guiMain.log(">>> GameStart Form Solved!");
+	}
+
+	public void anchorLocate() {
+		try {
+			guiMain.log("> Anchor Locating...");
+			screen.hover(imgAnchor);
+			anchor = new Location(Mouse.at());
+			guiMain.log("> Anchor Located!");
+		} catch (Exception e) {
+			e.printStackTrace();
+			guiMain.log("> Unknow Error Occoured! Retry...");
+			anchorLocate();
+		}
+	}
+
+	/*
+	 * Override Sikuli Method.
+	 * 
+	 */
 	public void click(String path) throws Exception {
-		if (imgExists(path))
+		if (imgExists(path)) {
 			screen.click(path);
+		}
 	}
 
 	public boolean imgExactExists(String path) {
 		return (screen.exists(new Pattern(path).exact()) == null ? false : true);
 	}
-	
+
 	public boolean imgExists(String path) {
 		return (screen.exists(path) == null ? false : true);
 	}
-	
+
 	public boolean imgExists(String path, double value) {
 		return (screen.exists(path, value) == null ? false : true);
 	}
