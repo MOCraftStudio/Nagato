@@ -1,6 +1,6 @@
 package org.mocraft.Nagato;
 
-import java.util.ArrayList;
+import java.util.Timer;
 
 import org.mocraft.Nagato.Gui.GuiMain;
 import org.mocraft.Nagato.Gui.GuiManager;
@@ -14,6 +14,7 @@ import org.sikuli.script.Screen;
 
 public class Nagato {
 
+	private static Timer tick = new Timer();
 	public static NagatoSystem system = new NagatoSystem();
 	public static GuiManager guiManager = new GuiManager();
 	public static GuiMain guiMain = new GuiMain();
@@ -25,18 +26,11 @@ public class Nagato {
 
 	public static Screen screen = new Screen();
 	public static Location anchor = new Location(0, 0);
-	public static ArrayList<Trap> traps = new ArrayList<Trap>();
-	
-	public static void main(String[] args) {		
+	public static Trap traps[] = new Trap[4];
+
+	public static void main(String[] args) {
 		initNagato();
-		while (true) {
-			system.cycleDetectWebAndFix();
-			port.detectFlagAndProcess();
-			surply.detectNeedAndSurply();
-			port.detectFlagAndProcess();
-			attack.detectTargetAndSendLevy();
-			if(team.hasTrapLeving()) { screen.wait(60.0); }
-		}
+		tick.schedule(system.new MainThread(), 0, 1000);
 	}
 
 	private static void initNagato() {
@@ -44,7 +38,9 @@ public class Nagato {
 			guiMain.log("Initing Nagato...");
 			system.detectWebAndFix(); // Exception has been processed.
 			system.anchorLocate(); // Exception has been processed.
-			for(int i = 0; i < 4; ++i) { traps.add(new Trap(i)); }
+			for (int i = 0; i < 4; ++i) {
+				traps[i] = new Trap(i);
+			}
 			team.getAllTrapStatus(); // Exception has been processed.
 			guiMain.log("Nagato Inited!");
 			guiMain.btnTesk.setEnabled(true);

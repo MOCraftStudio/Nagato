@@ -1,5 +1,8 @@
 package org.mocraft.Nagato;
 
+import java.util.Calendar;
+import java.util.TimerTask;
+
 import org.mocraft.Nagato.TypeDefine.WebStatus;
 import org.sikuli.script.Location;
 import org.sikuli.script.Mouse;
@@ -119,6 +122,19 @@ public class NagatoSystem extends Nagato {
 		}
 	}
 
+	public boolean detectSleep() {
+		Calendar time = Calendar.getInstance();
+		int now = time.get(Calendar.HOUR_OF_DAY) * 3600 + time.get(Calendar.MINUTE) * 60;
+
+		if(guiTesk.getBeginEndTime(0) <= now && now <= 86340) {
+			return true;
+		} else if(0 <= now && now <= guiTesk.getBeginEndTime(1)) { 
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
 	/*
 	 * Override Sikuli Method.
 	 * 
@@ -141,4 +157,22 @@ public class NagatoSystem extends Nagato {
 		return (screen.exists(path, value) == null ? false : true);
 	}
 
+	class MainThread extends TimerTask {	
+		
+		@Override
+		public void run() {
+			if (guiTesk.getRadioSwitch() && system.detectSleep()) {
+				guiMain.log("Sleeping...");
+			} else {
+				system.cycleDetectWebAndFix();
+				port.detectFlagAndProcess();
+				surply.detectNeedAndSurply();
+				port.detectFlagAndProcess();
+				attack.detectTargetAndSendLevy();
+				if (team.hasTrapLeving()) {
+					screen.wait(60.0);
+				}
+			}
+		}
+	}
 }

@@ -29,23 +29,23 @@ public class Port extends Nagato {
 			system.click(imgFlag);
 			screen.wait(imgNext, 60.0);
 			if(system.imgExactExists(imgTrap2N)) {
-				traps.get(1).cancel();
+				traps[1].cancel();
 				guiMain.log("> Trap 2 Detected!");
 				guiMain.countField[1].setText("Need Surply!");
 				guiMain.countField[1].setBackground(Color.RED);
-				traps.get(1).setType(TrapType.NeedSurply);
+				traps[1].setType(TrapType.NeedSurply);
 			} else if(system.imgExactExists(imgTrap3N)) {
-				traps.get(2).cancel();
+				traps[2].cancel();
 				guiMain.log("> Trap 3 Detected!");
 				guiMain.countField[2].setText("Need Surply!");
 				guiMain.countField[2].setBackground(Color.RED);
-				traps.get(2).setType(TrapType.NeedSurply);
+				traps[2].setType(TrapType.NeedSurply);
 			} else if(system.imgExactExists(imgTrap4N)) {
-				traps.get(3).cancel();
+				traps[3].cancel();
 				guiMain.log("> Trap 4 Detected!");
 				guiMain.countField[3].setText("Need Surply!");
 				guiMain.countField[3].setBackground(Color.RED);
-				traps.get(3).setType(TrapType.NeedSurply);
+				traps[3].setType(TrapType.NeedSurply);
 			}
 			system.click(imgNext);
 			system.click(imgNext);

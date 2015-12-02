@@ -1,7 +1,6 @@
 package org.mocraft.Nagato.Port;
 
 import org.mocraft.Nagato.Nagato;
-import org.mocraft.Nagato.Gui.GuiTesk;
 import org.mocraft.Nagato.TypeDefine.TrapType;
 
 public class Team extends Nagato {
@@ -23,10 +22,10 @@ public class Team extends Nagato {
 				}
 				if(system.imgExactExists("img/Team/leving.png")) {
 					guiMain.countField[i - 1].setText("Leving...");
-					traps.get(i - 1).setType(TrapType.Leving);
+					traps[i - 1].setType(TrapType.Leving);
 				} else {
 					guiMain.countField[i - 1].setText("Resting...");
-					traps.get(i - 1).setType(TrapType.Resting);
+					traps[i - 1].setType(TrapType.Resting);
 				}
 				guiMain.log(">> Trap " + i + " Has Updated!");
 			}
@@ -42,7 +41,7 @@ public class Team extends Nagato {
 
 	public boolean hasTrapLeving() {
 		for(int i = 1; i < 4; ++i) {
-			if(traps.get(i).getType() == TrapType.Leving) {
+			if(traps[i].getType() == TrapType.Leving) {
 				return true;
 			}
 		}
@@ -51,7 +50,7 @@ public class Team extends Nagato {
 
 	public boolean hasTrapBacked() {
 		for(int i = 1; i < 4; ++i) {
-			if(traps.get(i).getType() == TrapType.Backed) {
+			if(traps[i].getType() == TrapType.Backed) {
 				return true;
 			}
 		}
@@ -60,7 +59,7 @@ public class Team extends Nagato {
 	
 	public boolean hasTrapNeedLevy() {
 		for(int i = 1; i < 4; ++i) {
-			if(traps.get(i).getType() == TrapType.Resting && GuiTesk.target[i] != 0) {
+			if(traps[i].getType() == TrapType.Resting && guiTesk.getTarget(i) != 0) {
 				return true;
 			}
 		}
@@ -69,7 +68,7 @@ public class Team extends Nagato {
 
 	public boolean hasTrapNeedSurply() {
 		for(int i = 0; i < 4; ++i) {
-			if(traps.get(i).getType() == TrapType.NeedSurply) {
+			if(traps[i].getType() == TrapType.NeedSurply) {
 				return true;
 			}
 		}

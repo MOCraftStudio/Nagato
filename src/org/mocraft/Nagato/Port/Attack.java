@@ -2,7 +2,6 @@ package org.mocraft.Nagato.Port;
 
 import org.mocraft.Nagato.Nagato;
 import org.mocraft.Nagato.TypeDefine.TrapType;
-import org.mocraft.Nagato.Gui.GuiTesk;
 import org.mocraft.Nagato.Gui.LevyData;
 
 public class Attack extends Nagato {
@@ -21,7 +20,7 @@ public class Attack extends Nagato {
 			system.click(imgLevy);
 			
 			for(int i = 1; i < 4; ++i) {
-				int target = GuiTesk.target[i];
+				int target = guiTesk.getTarget(i);
 				if(target == 0 || !guiMain.countField[i].getText().equals("Resting...")) { continue; }
 				sectionChoose(target);
 				system.click("img/Attack/Levy/" + target + ".png");
@@ -29,8 +28,8 @@ public class Attack extends Nagato {
 				system.click("img/Global/trap" + (i + 1) + ".png");
 				system.click(imgStart);
 				//guiMain.countField[i].setText("Leving...");
-				traps.get(i).setType(TrapType.ScheduledLeving);
-				traps.get(i).start(LevyData.time[target]);
+				traps[i].setType(TrapType.ScheduledLeving);
+				traps[i].start(LevyData.time[target]);
 				guiMain.log("> Trap " + (i + 1) +  ", Levy Target: " + LevyData.name[target]);
 				screen.wait(5.0);
 			}

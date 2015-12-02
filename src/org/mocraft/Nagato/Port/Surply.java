@@ -18,12 +18,12 @@ public class Surply extends Nagato {
 			system.click(imgSurply);
 			
 			for(int i = 0; i < 4; ++i) {
-				if(traps.get(i).getType() != TrapType.NeedSurply) { continue; }
+				if(traps[i].getType() != TrapType.NeedSurply) { continue; }
 				system.click("img/Global/trap" + (i + 1) + ".png");
 				system.click(imgSelectAll);
 				guiMain.countField[i].setBackground(Color.WHITE);
 				guiMain.countField[i].setText("Resting...");
-				traps.get(i).setType(TrapType.Resting);
+				traps[i].setType(TrapType.Resting);
 				guiMain.log("> Trap " + (i + 1) + " Surplied!");
 			}
 			system.click(imgPort);
