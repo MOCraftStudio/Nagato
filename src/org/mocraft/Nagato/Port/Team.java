@@ -1,24 +1,28 @@
 package org.mocraft.Nagato.Port;
 
+import org.mocraft.Nagato.ImageData;
+import org.mocraft.Nagato.Loc;
 import org.mocraft.Nagato.Nagato;
 import org.mocraft.Nagato.TypeDefine.TrapType;
 
 public class Team extends Nagato {
 
-	private String imgTeam = "img/Port/team.png";
+	//private String imgTeam = "img/Port/team.png";
 	private String imgTrap1S = "img/Global/trap1-select.png";
-	private String imgPort = "img/Global/port.png";
-
-	public void getAllTrapStatus() {
-		guiMain.log("> Trap Status Updating...");
+	//private String imgPort = "img/Global/port.png";
+	
+	public void initTrapStatus() {
+		guiMain.log("> Trap Status Initing...");
 		try {
-			system.click(imgTeam);
-			screen.wait(imgTrap1S);
+			gameForm.click(ImageData.portTeam.randomLoc());
+			gameForm.wait(imgTrap1S);
 			
 			for(int i = 1; i < 5; ++i) {
 				if(i != 1) { 
-					system.click("img/Global/trap" + i + ".png");
-					screen.wait("img/Global/trap" + i + "-select.png");
+					Loc trap = new Loc(18, 18, 122 + 30 * (i - 1), 109, "");
+					gameForm.click(trap.randomLoc());
+					//gameForm.wait("img/Global/trap" + i + "-select.png");
+					gameForm.wait(1.0);
 				}
 				if(system.imgExactExists("img/Team/leving.png")) {
 					guiMain.countField[i - 1].setText("Leving...");
@@ -29,13 +33,14 @@ public class Team extends Nagato {
 				}
 				guiMain.log(">> Trap " + i + " Has Updated!");
 			}
-			system.click(imgPort);
-			guiMain.log("> Trap Status Updated!");
-			screen.hover(anchor);
+			gameForm.click(ImageData.globalPort.randomLoc());
+			gameForm.wait(ImageData.portTeam.img());
+			guiMain.log("> Trap Status Inited!");
+			gameForm.hover(zeroPoint);
 		} catch (Exception e) {
 			e.printStackTrace();
 			guiMain.log("> Unknow Error Occoured! Retry...");
-			getAllTrapStatus();
+			initTrapStatus();
 		}
 	}
 

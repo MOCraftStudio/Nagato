@@ -7,9 +7,13 @@ import org.mocraft.Nagato.TypeDefine.WebStatus;
 import org.sikuli.script.Location;
 import org.sikuli.script.Mouse;
 import org.sikuli.script.Pattern;
+import org.sikuli.script.Region;
 
 public class NagatoSystem extends Nagato {
 
+	public static final String buildVersion = "b040";
+	public static final String officialVersion = "Poi";
+	
 	private String imgCat = "img/Global/cat.png";
 	private String imgTv = "img/Global/teamviewer.png";
 	private String imgNonInternet = "img/Global/nonInternet.png";
@@ -28,13 +32,13 @@ public class NagatoSystem extends Nagato {
 			} else if (imgExists(imgCat)) {
 				guiMain.log(">> Detected Cat Error!");
 				processCat();
-			} else if (imgExists(imgTv)) {
+			} else if (globalImgExists(imgTv)) {
 				guiMain.log(">> Detected TeamViewer Form!");
 				processTv();
 			} else if (imgExists(imgGameStart)) {
 				guiMain.log(">> Detected Game Start Form!");
 				processGameStart();
-			} else if (imgExists(imgAnchor) || imgExists(imgPort)) {
+			} else if (globalImgExists(imgAnchor) || imgExists(imgPort)) {
 				guiMain.log(">> Detected Game Process Normal!");
 				return WebStatus.Normal;
 			} else {
@@ -56,7 +60,7 @@ public class NagatoSystem extends Nagato {
 			} else if (imgExists(imgCat)) {
 				guiMain.log(">> Detected Cat Error!");
 				processCat();
-			} else if (imgExists(imgTv)) {
+			} else if (globalImgExists(imgTv)) {
 				guiMain.log(">> Detected TeamViewer Form!");
 				processTv();
 			} else {
@@ -85,7 +89,7 @@ public class NagatoSystem extends Nagato {
 			click(imgF5);
 			if (imgExactExists(imgCat)) {
 				guiMain.log(">>> Cat Error UnSolved! Retry Atfer Minute.");
-				screen.wait(60);
+				gameForm.wait(60);
 			}
 		}
 		guiMain.log(">>> Cat Error Solved!");
@@ -93,9 +97,9 @@ public class NagatoSystem extends Nagato {
 
 	private void processTv() throws Exception {
 		guiMain.log(">>> Solving Tv Form...");
-		while (imgExactExists(imgTv)) {
+		while (globalImgExists(imgTv)) {
 			guiMain.log(">>> Exiting Tv Form...");
-			click("img/Global/Yes" + (imgExactExists("img/Global/Yes.png") ? "" : "-select") + ".png");
+			globalScreen.click("img/Global/Yes" + (imgExactExists("img/Global/Yes.png") ? "" : "-select") + ".png");
 		}
 		guiMain.log(">>> Tv Form Solved!");
 	}
@@ -112,8 +116,10 @@ public class NagatoSystem extends Nagato {
 	public void anchorLocate() {
 		try {
 			guiMain.log("> Anchor Locating...");
-			screen.hover(imgAnchor);
-			anchor = new Location(Mouse.at());
+			globalScreen.hover(imgAnchor);
+			zeroPoint = new Location(Mouse.at().getX() - 775, Mouse.at().getY() - 450);
+			gameForm = new Region(zeroPoint.getX(), zeroPoint.getY(), 800, 480);
+			gameForm.hover(zeroPoint);
 			guiMain.log("> Anchor Located!");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -141,20 +147,24 @@ public class NagatoSystem extends Nagato {
 	 */
 	public void click(String path) throws Exception {
 		if (imgExists(path)) {
-			screen.click(path);
+			gameForm.click(path);
 		}
 	}
 
+	public boolean globalImgExists(String path) {
+		return (globalScreen.exists(path) == null ? false : true);
+	}
+	
 	public boolean imgExactExists(String path) {
-		return (screen.exists(new Pattern(path).exact()) == null ? false : true);
+		return (gameForm.exists(new Pattern(path).exact()) == null ? false : true);
 	}
 
 	public boolean imgExists(String path) {
-		return (screen.exists(path) == null ? false : true);
+		return (gameForm.exists(path) == null ? false : true);
 	}
 
 	public boolean imgExists(String path, double value) {
-		return (screen.exists(path, value) == null ? false : true);
+		return (gameForm.exists(path, value) == null ? false : true);
 	}
 
 	class MainThread extends TimerTask {	
@@ -170,7 +180,7 @@ public class NagatoSystem extends Nagato {
 				port.detectFlagAndProcess();
 				attack.detectTargetAndSendLevy();
 				if (team.hasTrapLeving()) {
-					screen.wait(60.0);
+					gameForm.wait(60.0);
 				}
 			}
 		}

@@ -10,6 +10,7 @@ public class Trap extends Nagato {
 
 	private Timer timer;
 	private final int id;
+	private String name;
 	private int time;
 	private TrapType type;
 	
@@ -24,7 +25,9 @@ public class Trap extends Nagato {
 		timer.schedule(new Count(), 0, 1000);
 	}
 	
+	public String getName() { return name; }
 	public TrapType getType() { return type; }
+	public void setName(String n) { name = n; }
 	public void setType(TrapType t) { type = t; }
 	public void cancel() {
 		if(type == TrapType.Backed || type == TrapType.Leving) { return; }

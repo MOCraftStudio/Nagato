@@ -2,14 +2,15 @@ package org.mocraft.Nagato.Port;
 
 import java.awt.Color;
 
+import org.mocraft.Nagato.ImageData;
 import org.mocraft.Nagato.Nagato;
 import org.mocraft.Nagato.TypeDefine.TrapType;
 
 public class Port extends Nagato {
 
 	private String imgFlag = "img/Port/flag.png";
-	private String imgTeam = "img/Port/team.png";
-	private String imgPort = "img/Global/port.png";
+	//private String imgTeam = "img/Port/team.png";
+	//private String imgPort = "img/Global/port.png";
 	private String imgTrap2N = "img/Port/trap2-name.png";
 	private String imgTrap3N = "img/Port/trap3-name.png";
 	private String imgTrap4N = "img/Port/trap4-name.png";
@@ -20,14 +21,16 @@ public class Port extends Nagato {
 		try {
 			if(!system.imgExactExists(imgFlag)) {
 				guiMain.log("Flag Updating...");
-				system.click(imgTeam);
-				system.click(imgPort);
-				screen.hover(anchor);
+				gameForm.click(ImageData.portTeam.randomLoc());
+				gameForm.wait(ImageData.globalPort.img());
+				gameForm.click(ImageData.globalPort.randomLoc());
+				gameForm.wait(ImageData.portTeam.img());
+				gameForm.hover(zeroPoint);
 				return;
 			}
 			guiMain.log("Detected Flag, Processing...");
-			system.click(imgFlag);
-			screen.wait(imgNext, 60.0);
+			gameForm.click(imgFlag);
+			gameForm.wait(imgNext, 60.0);
 			if(system.imgExactExists(imgTrap2N)) {
 				traps[1].cancel();
 				guiMain.log("> Trap 2 Detected!");
@@ -47,8 +50,9 @@ public class Port extends Nagato {
 				guiMain.countField[3].setBackground(Color.RED);
 				traps[3].setType(TrapType.NeedSurply);
 			}
-			system.click(imgNext);
-			system.click(imgNext);
+			gameForm.click(imgNext);
+			gameForm.click(imgNext);
+			gameForm.wait(ImageData.portAttack.img());
 			detectFlagAndProcess();
 			guiMain.log("Flag Section Processed!");
 		} catch (Exception e) {

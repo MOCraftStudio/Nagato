@@ -91,7 +91,7 @@ public class GuiMain extends Nagato implements ActionListener {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menus[] = {new JMenu("Basic"), new JMenu("Others")};
 		JMenuItem itemss[][]  = {{new JMenuItem("Setup"), new JMenuItem("Exit")},
-								{new JMenuItem("FAQ"), new JMenuItem("About")}};
+								{new JMenuItem("Info"), new JMenuItem("About")}};
 		
 		for(int i = 0; i < menus.length; ++i) {
 			JMenuItem items[] = itemss[i];
@@ -113,6 +113,8 @@ public class GuiMain extends Nagato implements ActionListener {
 		String cmd = e.getActionCommand();
 		if(cmd.equals("tesk")) {
 			guiTesk.setVisible(true);
+		} else if(cmd.equals("Info")) { 
+			guiInfo.frame.setVisible(true);
 		} else if(cmd.equals("Exit")) {
 			guiExit.frame.setVisible(true);
 		}
