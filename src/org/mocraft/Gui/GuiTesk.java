@@ -10,8 +10,8 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.mocraft.Nagato.LevyData;
 import org.mocraft.Nagato.Nagato;
+import org.mocraft.Nagato.TrapType;
 
 public class GuiTesk extends Nagato implements ActionListener {
 
@@ -43,6 +43,7 @@ public class GuiTesk extends Nagato implements ActionListener {
 			comboGrid[i].fill = GridBagConstraints.HORIZONTAL;
 			comboGrid[i].anchor = GridBagConstraints.EAST;
 			frame.add(target[i], comboGrid[i]);
+			if (i == 0) { target[i].setEnabled(false); }
 		}
 
 		confirm = new JButton("Confirm");
@@ -69,14 +70,20 @@ public class GuiTesk extends Nagato implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		String cmd = e.getActionCommand();
-		if (cmd.equals("confirm")) {
-			for (int i = 0; i < 4; ++i) {
-				if(target[i].getSelectedIndex() == 0) { continue; }
-				trapTimers[i].setTarget(i, AtkType.Levy, target[i].getSelectedIndex());
+		try {
+			String cmd = e.getActionCommand();
+			if (cmd.equals("confirm")) {
+				for (int i = 1; i < 4; ++i) {
+					if (target[i].getSelectedIndex() == 0) { continue; }
+					traps[i].setTrap(i + 1);
+					traps[i].setType(TrapType.Rest);
+					traps[i].setTarget(target[i].getSelectedIndex());
+				}
 			}
+			frame.dispose();
+		} catch (Exception ee) {
+			ee.printStackTrace();
 		}
-		frame.dispose();
 	}
 
 }

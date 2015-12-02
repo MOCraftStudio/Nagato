@@ -4,52 +4,65 @@ import java.awt.Color;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.mocraft.Gui.AtkType;
-import org.mocraft.Gui.TrapStatus;
-import org.mocraft.Port.Attack;
+import org.mocraft.Gui.LevyData;
 
 public class TrapTimer extends TimerTask {
 
-	public static Timer timer = new Timer();
-	public TrapStatus status;
+	private static Timer timer = new Timer();
 	public static int trap;
-	public static AtkType type;
-	public static int target;
-	public static int time;
+	public static int target = 0;
+	private static int time;
+	public static TrapType type;
+
+	public TrapTimer(int _trap) { setTrap(trap = (_trap + 1)); }
 	
-	public void setTarget(int _trap, AtkType _type, int _target) {
-		trap = _trap;
-		type = _type;
-		target = _target;
-		return;
+	public void setTrap(int _trap) { trap = _trap; }
+	
+	public void setType(TrapType _type) { type = _type; }
+
+	public void setTarget(int _target) { target = _target; }
+
+	public void setTime(int _time) { time = (_time + 20); }
+
+	public TrapType getType() { return type; }
+	
+	public int getTarget() { return target; }
+	
+	public int getTrap() { return trap; }
+	
+	public String formatTime(int t) {
+		String s = String.format("%02d", t % 60);
+		String m = String.format("%02d", t / 60);
+		String h = String.format("%02d", t / 3600);
+		return h + "時間" + m + "分" + s + "秒";
 	}
 
 	@Override
 	public void run() {
-		if(time == 0) {
-			timer.cancel();
-			Nagato.mainGui.countField[trap].setBackground(Color.GREEN);
-			status = TrapStatus.REST;
-		} else {
-			time--;
-		}
-		Nagato.mainGui.countField[trap].setText(Integer.toString(time));
-	}
-	
-	public void start() {
 		try {
-			if(type == AtkType.Null) {
-			} else if(type == AtkType.Attack) {
-			} else if(type == AtkType.Practice) {
-			} else if(type == AtkType.Levy) {
-				Attack.levy(trap, target);
-				status = TrapStatus.LEVY;
-				time = LevyData.time[target];
-				timer.schedule(this, 0, 1000);
+			if (time == 0) {
+				timer.cancel();
+				Nagato.guiMain.countField[trap - 1].setBackground(Color.GREEN);
+				Nagato.guiMain.countField[trap - 1].setText("Resting...");
+				Nagato.port.processFlag();
+				setType(TrapType.Rest);
+			} else {
+				Nagato.guiMain.countField[trap - 1].setBackground(Color.WHITE);
+				Nagato.guiMain.countField[trap - 1].setText(formatTime(time));
+				time--;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			//Nagato.system.checkCatAndTv();
+		}
+	}
+
+	public void start() {
+		try {
+			setTime(LevyData.time[target]);
+			setType(TrapType.Levy);
+			timer.schedule(this, 0, 1000);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

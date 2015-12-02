@@ -4,20 +4,23 @@ import org.mocraft.Nagato.Nagato;
 
 public class Team extends Nagato {
 
-	public static void loadTrapStatus() throws Exception {
-		myScreen.click("img/Port/team.png");
-		myScreen.wait("img/Global/trap1-select.png");
-		for (int i = 1; i < 4; ++i) {
-			myScreen.click("img/Global/trap" + (i + 1) + ".png");
-			myScreen.wait("img/Global/trap" + (i + 1) + "-select.png");
-			if (system.imgExactExists("img/Global/leving.png")) {
-				myScreen.hover("img/Global/leving.png");
-				mainGui.countField[i].setText("Leving...");
+	public void getTrapStatus() throws Exception {
+		system.log(guiMain.logArea, "Loading Trap Status...");
+		system.click("img/Port/team.png");
+		screen.wait("img/Global/trap1-select.png", 10);
+		for(int i = 2; i < 5; ++i) {
+			system.click("img/Global/trap" + i + ".png");
+			screen.wait("img/Global/trap" + i + "-select.png");
+			if(system.imgExactExists("img/Team/leving.png")) {
+				guiMain.countField[i - 1].setText("Leving...");
 			} else {
-				mainGui.countField[i].setText("Resting...");
+				guiMain.countField[i - 1].setText("Resting...");
 			}
+			system.log(guiMain.logArea, "> Trap " + i + " status updated!");
 		}
-		myScreen.click("img/Global/port.png");
+		system.click("img/Global/port.png");
+		system.log(guiMain.logArea, "Trap Status Updated!");
+		screen.hover("img/Port/anchor.png");
 	}
-
+	
 }
