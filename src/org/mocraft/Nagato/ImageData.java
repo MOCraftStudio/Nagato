@@ -12,10 +12,10 @@ public class ImageData {
 	public static final Loc portAnchor = new Loc(21, 21, 765, 440, "img/Port/anchor.png");
 
 	// Surply
-	public static final Loc surplyTrap1 = new Loc(23, 20, 135, 109, "");
-	public static final Loc surplyTrap2 = new Loc(23, 20, 165, 109, "");
-	public static final Loc surplyTrap3 = new Loc(23, 20, 195, 109, "");
-	public static final Loc surplyTrap4 = new Loc(23, 20, 225, 109, "");
+	public static final Loc surplyTrap1 = new Loc(10, 10, 135, 109, "");
+	public static final Loc surplyTrap2 = new Loc(10, 10, 165, 109, "");
+	public static final Loc surplyTrap3 = new Loc(10, 10, 195, 109, "");
+	public static final Loc surplyTrap4 = new Loc(10, 10, 225, 109, "");
 	public static final Loc surplySelectAll = new Loc(22, 22, 107, 109, "img/Surply/selectAll.png");
 	
 	// Attack

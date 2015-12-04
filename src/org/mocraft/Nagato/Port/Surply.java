@@ -13,25 +13,27 @@ public class Surply extends Nagato {
 	//private String imgPort = "img/Global/port.png";
 	
 	public void detectNeedAndSurply() {
-		if(!team.hasTrapNeedSurply()) { return; }
+		if(!teamKai.hasTrapNeedSurply()) { return; }
 		try {
-			guiMain.log("Detected Need Surply, Processing...");
-			gameForm.click(ImageData.portSurply.randomLoc());
+			guiMain.logln("Detected Need Surply, Processing...");
+			systemKai.click(ImageData.portSurply);
 			gameForm.wait(ImageData.surplySelectAll.img());
 			
 			for(int i = 0; i < 4; ++i) {
 				if(traps[i].getType() != TrapType.NeedSurply) { continue; }
-				gameForm.click("img/Global/trap" + (i + 1) + ".png");
-				gameForm.click(ImageData.surplySelectAll.randomLoc());
+				systemKai.click("img/Global/trap" + (i + 1) + ".png");
+				systemKai.click(ImageData.surplySelectAll);
 				guiMain.countField[i].setBackground(Color.WHITE);
 				guiMain.countField[i].setText("Resting...");
 				traps[i].setType(TrapType.Resting);
-				guiMain.log("> Trap " + (i + 1) + " Surplied!");
+				guiMain.logln("> Trap " + (i + 1) + " Surplied!");
+				gameForm.wait(1.0);
 			}
-			gameForm.click(ImageData.globalPort.randomLoc());
+			systemKai.click(ImageData.globalPort);
 			gameForm.wait(ImageData.portAnchor.img());
-			guiMain.log("Suply Section Processed!");
+			guiMain.logln("Suply Section Processed!");
 			gameForm.hover(zeroPoint);
+			portKai.processFlag();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

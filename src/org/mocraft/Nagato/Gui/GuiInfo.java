@@ -9,9 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-import org.mocraft.Nagato.NagatoSystem;
+import org.mocraft.Nagato.NagatoSystemKai;
 
-public class GuiInfo extends NagatoSystem implements ActionListener {
+public class GuiInfo extends NagatoSystemKai implements ActionListener {
 
 	public JFrame frame;
 	private JLabel lbl[] = new JLabel[3];

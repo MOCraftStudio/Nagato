@@ -3,12 +3,12 @@ package org.mocraft.Nagato;
 import java.util.Calendar;
 import java.util.TimerTask;
 
-import org.mocraft.Nagato.TypeDefine.WebStatus;
 import org.sikuli.script.Location;
 import org.sikuli.script.Mouse;
 import org.sikuli.script.Pattern;
 import org.sikuli.script.Region;
 
+@Deprecated
 public class NagatoSystem extends Nagato {
 
 	public static final String buildVersion = "b040";
@@ -23,107 +23,126 @@ public class NagatoSystem extends Nagato {
 
 	private String imgF5 = "img/Global/f5.png";
 
-	public WebStatus detectWebAndFix() {
+	public void initNagato() {
 		try {
-			guiMain.log("> Detecting Web Status...");
+			guiMain.logln("[ Initing Nagato ]");
+			detectWebAndFix(); // Exception has been processed. 
+			
+			anchorLocate(); // Exception has been processed.
+			for (int i = 0; i < 4; ++i) {
+				traps[i] = new Trap(i);
+			}
+			teamKai.initTrapStatus(); // Exception has been processed.
+			guiMain.logln("Nagato Inited!");
+			//guiMain.btnTesk.setEnabled(true);
+		} catch (Exception e) {
+			//guiMain.btnTesk.setEnabled(false);
+			e.printStackTrace();
+			guiMain.logln("Natato Init Failed! Retry...");
+			initNagato();
+		}
+	}
+	
+	public void detectWebAndFix() {
+		try {
+			guiMain.logln("> Detecting Web Status...");
 			if (imgExists(imgNonInternet)) {
-				guiMain.log(">> Detected Website offline!");
+				guiMain.logln(">> Detected Website offline!");
 				processNonInternet();
 			} else if (imgExists(imgCat)) {
-				guiMain.log(">> Detected Cat Error!");
+				guiMain.logln(">> Detected Cat Error!");
 				processCat();
 			} else if (globalImgExists(imgTv)) {
-				guiMain.log(">> Detected TeamViewer Form!");
+				guiMain.logln(">> Detected TeamViewer Form!");
 				processTv();
 			} else if (imgExists(imgGameStart)) {
-				guiMain.log(">> Detected Game Start Form!");
+				guiMain.logln(">> Detected Game Start Form!");
 				processGameStart();
 			} else if (globalImgExists(imgAnchor) || imgExists(imgPort)) {
-				guiMain.log(">> Detected Game Process Normal!");
-				return WebStatus.Normal;
+				guiMain.logln(">> Detected Game Process Normal!");
+				return;
 			} else {
-				guiMain.log(">> Detected Unknown Status! Retring...");
+				guiMain.logln(">> Detected Unknown Status! Retring...");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			guiMain.log(">> Unknow Error Occoured! Retry...");
+			guiMain.logln(">> Unknow Error Occoured! Retry...");
 		}
-		return detectWebAndFix();
+		detectWebAndFix();
 	}
-
 	public void cycleDetectWebAndFix() {
 		try {
-			guiMain.log("Cycle Dectecting Web Status...");
+			guiMain.logln("Cycle Dectecting Web Status...");
 			if (imgExists(imgNonInternet)) {
-				guiMain.log(">> Detected Website offline!");
+				guiMain.logln(">> Detected Website offline!");
 				processNonInternet();
 			} else if (imgExists(imgCat)) {
-				guiMain.log(">> Detected Cat Error!");
+				guiMain.logln(">> Detected Cat Error!");
 				processCat();
 			} else if (globalImgExists(imgTv)) {
-				guiMain.log(">> Detected TeamViewer Form!");
+				guiMain.logln(">> Detected TeamViewer Form!");
 				processTv();
 			} else {
 				return;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			guiMain.log(">> Unknow Error Occoured! Retry...");
+			guiMain.logln(">> Unknow Error Occoured! Retry...");
 			cycleDetectWebAndFix();
 		}
 	}
 	
 	private void processNonInternet() throws Exception {
-		guiMain.log(">>> Solving NonInternet Error...");
+		guiMain.logln(">>> Solving NonInternet Error...");
 		while (imgExactExists(imgNonInternet)) {
-			guiMain.log(">> Reflashing Web...");
-			click(imgF5);
+			guiMain.logln(">> Reflashing Web...");
+			globalClick(imgF5);
 		}
-		guiMain.log(">>> NonInternet Error Solved!");
+		guiMain.logln(">>> NonInternet Error Solved!");
 	}
 
 	private void processCat() throws Exception {
-		guiMain.log(">>> Solving Cat Error...");
+		guiMain.logln(">>> Solving Cat Error...");
 		while (imgExactExists(imgCat)) {
-			guiMain.log(">>> Reflashing Web...");
-			click(imgF5);
+			guiMain.logln(">>> Reflashing Web...");
+			globalClick(imgF5);
 			if (imgExactExists(imgCat)) {
-				guiMain.log(">>> Cat Error UnSolved! Retry Atfer Minute.");
+				guiMain.logln(">>> Cat Error UnSolved! Retry Atfer Minute.");
 				gameForm.wait(60);
 			}
 		}
-		guiMain.log(">>> Cat Error Solved!");
+		guiMain.logln(">>> Cat Error Solved!");
 	}
 
 	private void processTv() throws Exception {
-		guiMain.log(">>> Solving Tv Form...");
+		guiMain.logln(">>> Solving Tv Form...");
 		while (globalImgExists(imgTv)) {
-			guiMain.log(">>> Exiting Tv Form...");
-			globalScreen.click("img/Global/Yes" + (imgExactExists("img/Global/Yes.png") ? "" : "-select") + ".png");
+			guiMain.logln(">>> Exiting Tv Form...");
+			globalClick("img/Global/Yes" + (imgExactExists("img/Global/Yes.png") ? "" : "-select") + ".png");
 		}
-		guiMain.log(">>> Tv Form Solved!");
+		guiMain.logln(">>> Tv Form Solved!");
 	}
 
 	private void processGameStart() throws Exception {
-		guiMain.log(">>> Solving GameStart Form...");
+		guiMain.logln(">>> Solving GameStart Form...");
 		while (imgExactExists(imgGameStart)) {
-			guiMain.log(">>> Entering Game...");
+			guiMain.logln(">>> Entering Game...");
 			click(imgGameStart);
 		}
-		guiMain.log(">>> GameStart Form Solved!");
+		guiMain.logln(">>> GameStart Form Solved!");
 	}
 
 	public void anchorLocate() {
 		try {
-			guiMain.log("> Anchor Locating...");
+			guiMain.logln("> Anchor Locating...");
 			globalScreen.hover(imgAnchor);
 			zeroPoint = new Location(Mouse.at().getX() - 775, Mouse.at().getY() - 450);
 			gameForm = new Region(zeroPoint.getX(), zeroPoint.getY(), 800, 480);
 			gameForm.hover(zeroPoint);
-			guiMain.log("> Anchor Located!");
+			guiMain.logln("> Anchor Located!");
 		} catch (Exception e) {
 			e.printStackTrace();
-			guiMain.log("> Unknow Error Occoured! Retry...");
+			guiMain.logln("> Unknow Error Occoured! Retry...");
 			anchorLocate();
 		}
 	}
@@ -131,10 +150,11 @@ public class NagatoSystem extends Nagato {
 	public boolean detectSleep() {
 		Calendar time = Calendar.getInstance();
 		int now = time.get(Calendar.HOUR_OF_DAY) * 3600 + time.get(Calendar.MINUTE) * 60;
-
-		if(guiTesk.getBeginEndTime(0) <= now && now <= 86340) {
+		int start = guiLevyTesk.getBeginEndTime(0);
+		int end = guiLevyTesk.getBeginEndTime(1);
+		if(start >= end && ((now >= start && now <= 86340) || ( now >= 0 && now <= end))) {
 			return true;
-		} else if(0 <= now && now <= guiTesk.getBeginEndTime(1)) { 
+		} else if(end >= start && now >= start && now <= end) {
 			return true;
 		} else {
 			return false;
@@ -151,6 +171,12 @@ public class NagatoSystem extends Nagato {
 		}
 	}
 
+	public void globalClick(String path) throws Exception {
+		if (globalImgExists(path)) {
+			globalScreen.click(path);
+		}
+	}
+	
 	public boolean globalImgExists(String path) {
 		return (globalScreen.exists(path) == null ? false : true);
 	}
@@ -171,15 +197,15 @@ public class NagatoSystem extends Nagato {
 		
 		@Override
 		public void run() {
-			if (guiTesk.getRadioSwitch() && system.detectSleep()) {
-				guiMain.log("Sleeping...");
+			if (guiLevyTesk.getRadioSwitch() && detectSleep()) {
+				guiMain.logln("Sleeping...");
 			} else {
-				system.cycleDetectWebAndFix();
-				port.detectFlagAndProcess();
+				cycleDetectWebAndFix();
+				//portKai.detectFlagAndProcess();
 				surply.detectNeedAndSurply();
-				port.detectFlagAndProcess();
+				//portKai.detectFlagAndProcess();
 				attack.detectTargetAndSendLevy();
-				if (team.hasTrapLeving()) {
+				if (teamKai.hasTrapLeving()) {
 					gameForm.wait(60.0);
 				}
 			}
