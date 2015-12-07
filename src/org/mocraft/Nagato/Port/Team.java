@@ -16,13 +16,13 @@ public class Team extends Nagato {
 		guiMain.logln("> Trap Status Initing...");
 		try {
 			gameForm.click(ImageData.portTeam.randomLoc());
-			gameForm.wait(imgTrap1S);
+			gameForm.wait(imgTrap1S, 5.0);
 			
 			for(int i = 1; i < 5; ++i) {
 				if(i != 1) { 
 					Loc trap = new Loc(18, 18, 122 + 30 * (i - 1), 109, "");
 					gameForm.click(trap.randomLoc());
-					//gameForm.wait("img/Global/trap" + i + "-select.png");
+					//gameForm.wait("img/Global/trap" + i + "-select.png", 5.0);
 					gameForm.wait(1.0);
 				}
 				if(systemKai.imgExactExists("img/Team/leving.png")) {
@@ -35,7 +35,7 @@ public class Team extends Nagato {
 				guiMain.logln(">> Trap " + i + " Has Updated!");
 			}
 			gameForm.click(ImageData.globalPort.randomLoc());
-			gameForm.wait(ImageData.portTeam.img());
+			gameForm.wait(ImageData.portTeam.img(), 5.0);
 			guiMain.logln("> Trap Status Inited!");
 			gameForm.hover(zeroPoint);
 		} catch (Exception e) {

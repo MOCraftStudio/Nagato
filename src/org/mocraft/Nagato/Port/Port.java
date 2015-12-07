@@ -23,9 +23,9 @@ public class Port extends Nagato {
 			if(!systemKai.imgExactExists(imgFlag)) {
 				guiMain.logln("Flag Updating...");
 				gameForm.click(ImageData.portTeam.randomLoc());
-				gameForm.wait(ImageData.globalPort.img());
+				gameForm.wait(ImageData.globalPort.img(), 5.0);
 				gameForm.click(ImageData.globalPort.randomLoc());
-				gameForm.wait(ImageData.portTeam.img());
+				gameForm.wait(ImageData.portTeam.img(), 5.0);
 				gameForm.hover(zeroPoint);
 				return;
 			}
@@ -56,7 +56,7 @@ public class Port extends Nagato {
 			}
 			gameForm.click(imgNext);
 			gameForm.click(imgNext);
-			gameForm.wait(ImageData.portAttack.img());
+			gameForm.wait(ImageData.portAttack.img(), 5.0);
 			detectFlagAndProcess();
 			guiMain.logln("Flag Section Processed!");
 		} catch (Exception e) {

@@ -23,9 +23,9 @@ public class Attack extends Nagato {
 		try {
 			guiMain.logln("Detected Tesked Levy, Processing...");
 			systemKai.click(ImageData.portAttack);
-			gameForm.wait(ImageData.levy.img(), 5);
+			gameForm.wait(ImageData.levy.img(), 5.0);
 			systemKai.click(ImageData.levy);
-			gameForm.wait(ImageData.levyI.img(), 5);
+			gameForm.wait(ImageData.levyI.img(), 5.0);
 			
 			for(int i = 1; i < 4; ++i) {
 				int target = guiLevyTesk.getTarget(i);
@@ -36,9 +36,11 @@ public class Attack extends Nagato {
 				systemKai.click("img/Global/trap" + (i + 1) + ".png");
 				systemKai.click(ImageData.levyStart);
 				traps[i].setType(TrapType.ScheduledLeving);
-				traps[i].start(LevyData.time[target]);
+				//traps[i].start(LevyData.time[target]);
+				traps[i].start(LevyData.levys[target].getTime());
 				//guiMain.targetLbl[i].setText(LevyData.name[target]);
-				guiMain.logln("> Trap " + (i + 1) +  ", Levy Target: " + LevyData.name[target]);
+				//guiMain.logln("> Trap " + (i + 1) +  ", Levy Target: " + LevyData.name[target]);
+				guiMain.logln("> Trap " + (i + 1) +  ", Levy Target: " + LevyData.levys[target].getName());
 				gameForm.wait(5.0);
 			}
 			guiMain.logln("Tesked Levy Section Processed!");

@@ -22,9 +22,9 @@ public class PortKai extends Nagato {
 			if ((teamKai.hasTrapLeving() || teamKai.hasTrapBacked()) && !systemKai.imgExactExists(imgFlag)) {
 				guiMain.logln("None.");
 				systemKai.click(ImageData.portTeam.img());
-				gameForm.wait(ImageData.globalPort.img());
+				gameForm.wait(ImageData.globalPort.img(), 5.0);
 				systemKai.click(ImageData.globalPort.img());
-				gameForm.wait(ImageData.portTeam.img());
+				gameForm.wait(ImageData.portTeam.img(), 5.0);
 				gameForm.hover(zeroPoint);
 				return;
 			} else if(!systemKai.imgExactExists(imgFlag)) {
@@ -64,7 +64,7 @@ public class PortKai extends Nagato {
 			}
 			systemKai.click(imgNext);
 			systemKai.click(imgNext);
-			gameForm.wait(ImageData.portAttack.img());
+			gameForm.wait(ImageData.portAttack.img(), 5.0);
 			processFlag();
 		} catch (Exception e) {
 			e.printStackTrace();

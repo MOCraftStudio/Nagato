@@ -15,7 +15,7 @@ public class GuiExercise extends Nagato {
 		frame.setSize(330, 260);
 		frame.setLayout(new GridBagLayout());
 		
-		
+		frame.setVisible(true);
 	}
 	
 }

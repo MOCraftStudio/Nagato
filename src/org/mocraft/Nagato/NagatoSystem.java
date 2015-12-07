@@ -108,7 +108,7 @@ public class NagatoSystem extends Nagato {
 			globalClick(imgF5);
 			if (imgExactExists(imgCat)) {
 				guiMain.logln(">>> Cat Error UnSolved! Retry Atfer Minute.");
-				gameForm.wait(60);
+				gameForm.wait(60.0);
 			}
 		}
 		guiMain.logln(">>> Cat Error Solved!");

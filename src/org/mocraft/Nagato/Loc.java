@@ -11,9 +11,9 @@ public class Loc extends Nagato {
 	private String imgString = "";
 
 	public Loc(int w, int h, int x, int y, String s) {
-		this.width = w;
-		this.height = h;
-		this.loc = new Location(x, y);
+		this.width = w - 4;
+		this.height = h - 4;
+		this.loc = new Location(x + 2, y + 2);
 		this.imgString = s;
 	}
 	

@@ -33,8 +33,8 @@ public class Nagato {
 	public static Trap traps[] = new Trap[4];
 
 	public static void main(String[] args) {
-		systemKai.initNagato();
-		tick.schedule(systemKai.new MainThread(), 0, 5000);
+		 systemKai.initNagato();
+		 tick.schedule(systemKai.new MainThread(), 0, 5000);
 	}
 
 }

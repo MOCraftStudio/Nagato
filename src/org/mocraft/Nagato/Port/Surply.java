@@ -17,7 +17,7 @@ public class Surply extends Nagato {
 		try {
 			guiMain.logln("Detected Need Surply, Processing...");
 			systemKai.click(ImageData.portSurply);
-			gameForm.wait(ImageData.surplySelectAll.img());
+			gameForm.wait(ImageData.surplySelectAll.img(), 5.0);
 			
 			for(int i = 0; i < 4; ++i) {
 				if(traps[i].getType() != TrapType.NeedSurply) { continue; }
@@ -30,7 +30,7 @@ public class Surply extends Nagato {
 				gameForm.wait(1.0);
 			}
 			systemKai.click(ImageData.globalPort);
-			gameForm.wait(ImageData.portAnchor.img());
+			gameForm.wait(ImageData.portAnchor.img(), 5.0);
 			guiMain.logln("Suply Section Processed!");
 			gameForm.hover(zeroPoint);
 			portKai.processFlag();
