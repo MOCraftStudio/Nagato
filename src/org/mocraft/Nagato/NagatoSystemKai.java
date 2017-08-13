@@ -10,7 +10,7 @@ import org.sikuli.script.Region;
 
 public class NagatoSystemKai extends Nagato {
 
-	public static final String buildVersion = "b040";
+	public static final String buildVersion = "b041";
 	public static final String officialVersion = "Poi";
 
 	private String imgCat = "img/Global/cat.png";
