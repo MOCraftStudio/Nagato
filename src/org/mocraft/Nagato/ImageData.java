@@ -32,4 +32,5 @@ public class ImageData {
 	public static final Loc levyTrap3 = new Loc(20, 20, 411, 108, "");
 	public static final Loc levyTrap4 = new Loc(20, 20, 441, 108, "");
 	public static final Loc levyStart = new Loc(144, 43, 558, 424, "img/Attack/Levy/start.png");
+	public static final Loc levyStartv2 = new Loc(161, 27, 533, 431, "img/Attack/Levy/startv2.png");
 }

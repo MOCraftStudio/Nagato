@@ -33,8 +33,10 @@ public class Attack extends Nagato {
 				sectionChoose(target);
 				systemKai.click("img/Attack/Levy/" + target + ".png");
 				systemKai.click(ImageData.levyDecide);
+				gameForm.wait("img/Global/trap2-select.png", 5.0);
 				systemKai.click("img/Global/trap" + (i + 1) + ".png");
-				systemKai.click(ImageData.levyStart);
+				//systemKai.click(ImageData.levyStart);
+				systemKai.click(ImageData.levyStartv2);
 				traps[i].setType(TrapType.ScheduledLeving);
 				//traps[i].start(LevyData.time[target]);
 				traps[i].start(LevyData.levys[target].getTime());
