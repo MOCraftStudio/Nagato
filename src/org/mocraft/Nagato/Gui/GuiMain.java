@@ -73,7 +73,6 @@ public class GuiMain extends Nagato implements ActionListener {
 	
 	public void setVisible(boolean sw) {
 		frame.setVisible(sw);
-		return;
 	}
 	
 	public JMenuBar initMenu() {
