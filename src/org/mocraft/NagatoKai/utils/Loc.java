@@ -20,10 +20,11 @@ public class Loc extends Nagato {
 
     public int width() { return width; }
     public int height() { return height; }
+    public Size regionSize() { return new Size(width + 8, height + 8); }
     public String img() { return imgString; }
 
     public Location regionLoc() {
-        return new Location(loc.getX() + instance.zeroPoint.getX() - 2, loc.getY() + instance.zeroPoint.getY() - 2);
+        return new Location(loc.getX() + instance.zeroPoint.getX() - 4, loc.getY() + instance.zeroPoint.getY() - 4);
     }
 
     public Location topLeftLoc() {

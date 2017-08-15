@@ -16,20 +16,20 @@ public class Team {
     }
 
     public void initTrapStatus() {
+        Loc[] fleetLoc = {null, ImageData.teamFleet2, ImageData.teamFleet3, ImageData.teamFleet4};
+        Loc[] fleetSLoc = {null, ImageData.teamFleet2S, ImageData.teamFleet3S, ImageData.teamFleet4S};
+
         try {
-            instance.system.click(ImageData.portTeam);
-            instance.gameForm.wait(imgTrap1S, 5.0);
+            instance.system.clickWait(ImageData.portTeam, ImageData.teamFleet1S, 5.0);
 
             for(int i = 1; i < 5; ++i) {
                 if(instance.fleets[i - 1].getStatus() != FleetStatus.Unknown)
                     continue;
 
-                if(i != 1) {
-                    Loc trap = new Loc(18, 18, 122 + 30 * (i - 1), 109, "");
-                    instance.gameForm.click(trap.randomLoc());
-                    instance.gameForm.wait(1.0);
-                }
-                if(instance.system.imgExactExists("img/Team/leving.png")) {
+                if(i != 1)
+                    instance.system.clickWait(fleetLoc[i - 1], fleetSLoc[i - 1], 5.0);
+
+                if(instance.system.imgExactExists(ImageData.leving)) {
                     instance.guiMain.getCountField(i - 1).setText("Leving...");
                     instance.guiMain.getLblTarget(i - 1).setText("<Unknown>");
                     instance.fleets[i - 1].setStatus(FleetStatus.Leving);
@@ -38,10 +38,9 @@ public class Team {
                     instance.guiMain.getLblTarget(i - 1).setText(" ");
                     instance.fleets[i - 1].setStatus(FleetStatus.Resting);
                 }
-                instance.guiMain.logln(">>> Trap " + i + " Has Updated!");
+                instance.guiMain.logln(">>> Fleet " + i + " Has Updated!");
             }
-            instance.system.click(ImageData.globalPort);
-            instance.gameForm.wait(ImageData.portTeam.img(), 5.0);
+            instance.system.clickWait(ImageData.globalPort, ImageData.portTeam, 5.0);
             instance.gameForm.hover(instance.zeroPoint);
         } catch (Exception e) {
             e.printStackTrace();

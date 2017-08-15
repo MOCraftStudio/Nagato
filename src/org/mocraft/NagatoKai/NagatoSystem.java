@@ -88,7 +88,7 @@ public class NagatoSystem {
     }
 
     public void click(Loc data) throws Exception {
-        if(imgExists(data.img())) {
+        if(imgExists(data)) {
             instance.gameForm.click(data.randomLoc());
         }
     }
@@ -97,7 +97,7 @@ public class NagatoSystem {
         if(imgExists(clickWho)) {
             instance.gameForm.click(clickWho.randomLoc());
         }
-        Region region = new Region(waitWho.regionLoc().getX(), waitWho.regionLoc().getY(), waitWho.width(), waitWho.height());
+        Region region = new Region(waitWho.regionLoc().getX(), waitWho.regionLoc().getY(), waitWho.regionSize().width, waitWho.regionSize().height);
         region.wait(waitWho.img(), timeout);
     }
 
@@ -105,7 +105,8 @@ public class NagatoSystem {
         if(imgExists(clickWho)) {
             instance.gameForm.click(clickWho);
         }
-        instance.gameForm.wait(waitWho.img(), timeout);
+        Region region = new Region(waitWho.regionLoc().getX(), waitWho.regionLoc().getY(), waitWho.regionSize().width, waitWho.regionSize().height);
+        region.wait(waitWho.img(), timeout);
     }
 
     public void clickWait(Loc clickWho, String waitWho, double timeout) throws Exception {
@@ -127,7 +128,7 @@ public class NagatoSystem {
     public boolean imgExists(String path) { return (instance.gameForm.exists(path) == null ? false : true); }
 
     public boolean imgExists(Loc loc) throws Exception{
-        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.width(), loc.height());
+        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.regionSize().width, loc.regionSize().height);
         return (region.exists(loc.img()) == null ? false : true);
     }
 
@@ -136,7 +137,7 @@ public class NagatoSystem {
     }
 
     public boolean imgExactExists(Loc loc) {
-        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.width(), loc.height());
+        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.regionSize().width, loc.regionSize().height);
         return (region.exists(new Pattern(loc.img()).exact()) == null ? false : true);
     }
 

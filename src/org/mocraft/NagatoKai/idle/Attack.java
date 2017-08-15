@@ -4,6 +4,7 @@ import org.mocraft.NagatoKai.Nagato;
 import org.mocraft.NagatoKai.utils.FleetStatus;
 import org.mocraft.NagatoKai.utils.ImageData;
 import org.mocraft.NagatoKai.utils.LevyData;
+import org.mocraft.NagatoKai.utils.Loc;
 
 // 出擊
 public class Attack {
@@ -16,8 +17,12 @@ public class Attack {
 
     public void detectTargetAndSendLevy() {
         if(!instance.team.hasNeedLevy()) { return; }
+        Loc[] fleetLoc = {null, null, ImageData.teamFleet3, ImageData.teamFleet4};
+        Loc[] fleetSLoc = {null, ImageData.levyFleet2S, ImageData.levyFleet3S, ImageData.levyFleet4S};
+
         try {
             instance.guiMain.logln("Detected Tasked Levy, Processing...");
+
             instance.system.clickWait(ImageData.portAttack, ImageData.levy, 5.0);
             instance.system.clickWait(ImageData.levy, ImageData.levyI, 5.0);
 
@@ -25,14 +30,15 @@ public class Attack {
                 int target = instance.guiMain.getGuiLevy().getTarget(i);
                 if(target == 0 || !instance.guiMain.getCountField(i).getText().equals("Resting...")) { continue; }
                 sectionChoose(target);
-                instance.system.click("img/Attack/Levy/" + target + ".png");
-                if(instance.system.imgExists(ImageData.levyAbandon.img())) {
+                instance.system.clickWait("img/Attack/Levy/" + target + ".png", ImageData.levySendedAnchor, 5.0);
+                if(instance.system.imgExists(ImageData.levyAbandon)) {
                     instance.fleets[i].setStatus(FleetStatus.TaskError);
                     instance.guiMain.logln("> Fleet " + (i + 1) + ", Levy Target: " + LevyData.levys[target].getName() + " has error.");
                     continue;
                 }
-                instance.system.clickWait(ImageData.levyDecide, "img/Global/trap2-select.png", 5.0);
-                instance.system.clickWait("img/Global/trap" + (i + 1) + ".png", ImageData.levyStartv2, 5.0);
+                instance.system.clickWait(ImageData.levyDecide, ImageData.levyFleet1U, 5.0);
+                if(i + 1 > 2)
+                    instance.system.clickWait(fleetLoc[i + 1], fleetSLoc[i + 1], 5.0);
                 if(detectNeedSurplyBeforeSend()) {
                     instance.fleets[i].setStatus(FleetStatus.NeedSurply);
                     instance.guiMain.logln("> Fleet " + (i + 1) + "is missed surply, cancel task.");
@@ -40,7 +46,7 @@ public class Attack {
                 }
                 instance.system.click(ImageData.levyStartv2);
                 instance.gameForm.wait(5.0);
-                instance.gameForm.wait("img/Attack/Levy/levySendedAnchor.png", 5.0);
+                instance.gameForm.wait(ImageData.levySendedAnchor, 5.0);
                 instance.fleets[i].setStatus(FleetStatus.ScheduledLevy);
                 instance.fleets[i].start(LevyData.levys[target].getTime());
                 instance.guiMain.logln("> Fleet " + (i + 1) +  ", Levy Target: " + LevyData.levys[target].getName());
