@@ -23,12 +23,10 @@ public class Port {
     public void detectFlag() {
         try {
             instance.guiMain.log("(*) Detecting Flag: ");
-            if ((instance.team.hasTrapLeving() || instance.team.hasTrapBacked()) && !instance.system.imgExactExists(imgFlag)) {
+            if ((instance.team.hasLeving() || instance.team.hasBacked()) && !instance.system.imgExactExists(imgFlag)) {
                 instance.guiMain.logln("None.");
-                instance.system.click(ImageData.portTeam.img());
-                instance.gameForm.wait(ImageData.globalPort.img(), 5.0);
-                instance.system.click(ImageData.globalPort.img());
-                instance.gameForm.wait(ImageData.portTeam.img(), 5.0);
+                instance.system.clickWait(ImageData.portTeam, ImageData.globalPort, 5.0);
+                instance.system.clickWait(ImageData.globalPort, ImageData.portTeam, 5.0);
                 instance.gameForm.hover(instance.zeroPoint);
                 return;
             } else if(!instance.system.imgExactExists(imgFlag)) {
@@ -45,8 +43,7 @@ public class Port {
     public void processFlag() {
         if (!instance.system.imgExactExists(imgFlag)) { return; }
         try {
-            instance.system.click(imgFlag);
-            instance.gameForm.wait(imgNext, 60.0);
+            instance.system.clickWait(imgFlag, imgNext, 60.0);
             if (instance.system.imgExactExists(imgTrap2N)) {
                 instance.fleets[1].cancel();
                 instance.guiMain.logln(">>> Trap 2 Detected!");
@@ -67,10 +64,8 @@ public class Port {
                 instance.fleets[3].setStatus(FleetStatus.NeedSurply);
             }
             instance.gameForm.wait(imgNext, 10.0);
-            instance.system.click(imgNext);
-            instance.gameForm.wait(imgNext, 10.0);
-            instance.system.click(imgNext);
-            instance.gameForm.wait(ImageData.portAttack.img(), 5.0);
+            instance.system.clickWait(imgNext, imgNext, 10.0);
+            instance.system.clickWait(imgNext, ImageData.portAttack.img(),5.0);
             processFlag();
         } catch (Exception e) {
             e.printStackTrace();

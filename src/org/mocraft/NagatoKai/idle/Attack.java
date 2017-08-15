@@ -14,43 +14,10 @@ public class Attack {
         this.instance = instance;
     }
 
-    @Deprecated
     public void detectTargetAndSendLevy() {
-        if(!instance.team.hasTrapNeedLevy()) { return; }
+        if(!instance.team.hasNeedLevy()) { return; }
         try {
-            instance.guiMain.logln("Detected Tesked Levy, Processing...");
-            instance.system.click(ImageData.portAttack);
-            instance.gameForm.wait(ImageData.levy.img(), 5.0);
-            instance.system.click(ImageData.levy);
-            instance.gameForm.wait(ImageData.levyI.img(), 5.0);
-
-            for(int i = 1; i < 4; ++i) {
-                int target = instance.guiMain.getGuiLevy().getTarget(i);
-                if(target == 0 || !instance.guiMain.getCountField(i).getText().equals("Resting...")) { continue; }
-                sectionChoose(target);
-                instance.system.click("img/Attack/Levy/" + target + ".png");
-                instance.system.click(ImageData.levyDecide);
-                instance.gameForm.wait("img/Global/trap2-select.png", 5.0);
-                instance.system.click("img/Global/trap" + (i + 1) + ".png");
-                instance.system.click(ImageData.levyStartv2);
-                instance.fleets[i].setStatus(FleetStatus.ScheduledLevy);
-                instance.fleets[i].start(LevyData.levys[target].getTime());
-                instance.guiMain.logln("> Trap " + (i + 1) +  ", Levy Target: " + LevyData.levys[target].getName());
-                instance.gameForm.wait(5.0);
-            }
-            instance.guiMain.logln("Tesked Levy Section Processed!");
-            instance.system.click(ImageData.globalPort);
-            instance.gameForm.hover(instance.instance.zeroPoint);
-            instance.port.processFlag();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void detectTargetAndSendLevyKai() {
-        if(!instance.team.hasTrapNeedLevy()) { return; }
-        try {
-            instance.guiMain.logln("Detected Tesked Levy, Processing...");
+            instance.guiMain.logln("Detected Tasked Levy, Processing...");
             instance.system.clickWait(ImageData.portAttack, ImageData.levy, 5.0);
             instance.system.clickWait(ImageData.levy, ImageData.levyI, 5.0);
 

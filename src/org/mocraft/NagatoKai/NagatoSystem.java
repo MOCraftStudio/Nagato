@@ -18,8 +18,8 @@ public class NagatoSystem {
     public static final String buildVersion = "build0.4.2";
 
     private Nagato instance;
-    private initor initor;
-    private processor processor;
+    public initor initor;
+    public processor processor;
 
     // Static Images
     private String imgCat = "img/Global/cat.png";
@@ -94,10 +94,11 @@ public class NagatoSystem {
     }
 
     public void clickWait(Loc clickWho, Loc waitWho, double timeout) throws Exception {
-        if(imgExists(clickWho.img())) {
+        if(imgExists(clickWho)) {
             instance.gameForm.click(clickWho.randomLoc());
         }
-        instance.gameForm.wait(waitWho.img(), timeout);
+        Region region = new Region(waitWho.regionLoc().getX(), waitWho.regionLoc().getY(), waitWho.width(), waitWho.height());
+        region.wait(waitWho.img(), timeout);
     }
 
     public void clickWait(String clickWho, Loc waitWho, double timeout) throws Exception {
@@ -108,7 +109,7 @@ public class NagatoSystem {
     }
 
     public void clickWait(Loc clickWho, String waitWho, double timeout) throws Exception {
-        if(imgExists(clickWho.img())) {
+        if(imgExists(clickWho)) {
             instance.gameForm.click(clickWho.randomLoc());
         }
         instance.gameForm.wait(waitWho, timeout);
@@ -123,15 +124,23 @@ public class NagatoSystem {
 
     public boolean globalImgExists(String path) { return (instance.globalScreen.exists(path) == null ? false : true); }
 
-    public boolean imgExists(String path) {
-        return (instance.gameForm.exists(path) == null ? false : true);
+    public boolean imgExists(String path) { return (instance.gameForm.exists(path) == null ? false : true); }
+
+    public boolean imgExists(Loc loc) throws Exception{
+        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.width(), loc.height());
+        return (region.exists(loc.img()) == null ? false : true);
     }
 
     public boolean imgExactExists(String path) {
         return (instance.gameForm.exists(new Pattern(path).exact()) == null ? false : true);
     }
 
-    class initor {
+    public boolean imgExactExists(Loc loc) {
+        Region region = new Region(loc.regionLoc().getX(), loc.regionLoc().getY(), loc.width(), loc.height());
+        return (region.exists(new Pattern(loc.img()).exact()) == null ? false : true);
+    }
+
+    public class initor {
 
         public void initDetectWebAndFix() {
             try {
@@ -195,7 +204,7 @@ public class NagatoSystem {
 
     }
 
-    class processor {
+    public class processor {
 
         private void processNonInternetAndCat() throws Exception {
             globalClick(imgF5);
@@ -241,9 +250,8 @@ public class NagatoSystem {
                 initor.initDetectWebAndFix();
                 instance.port.detectFlag();
                 instance.surply.detectNeedAndSurply();
-                //instance.attack.detectTargetAndSendLevy();
-                instance.attack.detectTargetAndSendLevyKai();
-                if (instance.team.hasTrapLeving()) {
+                instance.attack.detectTargetAndSendLevy();
+                if (instance.team.hasLeving()) {
                     instance.gameForm.wait(60.0);
                 }
             }

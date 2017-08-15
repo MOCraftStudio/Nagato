@@ -22,6 +22,10 @@ public class Loc extends Nagato {
     public int height() { return height; }
     public String img() { return imgString; }
 
+    public Location regionLoc() {
+        return new Location(loc.getX() + instance.zeroPoint.getX() - 2, loc.getY() + instance.zeroPoint.getY() - 2);
+    }
+
     public Location topLeftLoc() {
         return new Location(loc.getX() + instance.zeroPoint.getX(), loc.getY() + instance.zeroPoint.getY());
     }

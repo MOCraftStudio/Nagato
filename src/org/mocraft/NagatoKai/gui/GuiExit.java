@@ -1,5 +1,6 @@
 package org.mocraft.NagatoKai.gui;
 
+import com.sun.glass.ui.Application;
 import org.mocraft.NagatoKai.Nagato;
 
 import javax.swing.*;
@@ -45,6 +46,7 @@ public class GuiExit extends GuiConstructor implements ActionListener {
         if(cmd.equals("confirm")) {
             frame.dispose();
             instance.guiMain.dispose();
+            System.exit(0);
         } else {
             frame.dispose();
         }

@@ -16,7 +16,7 @@ public class Surply {
     }
 
     public void detectNeedAndSurply() {
-        if(!instance.team.hasTrapNeedSurply()) { return; }
+        if(!instance.team.hasNeedSurply()) { return; }
         try {
             instance.guiMain.logln("Detected Need Surply, Processing...");
             instance.system.click(ImageData.portSurply);

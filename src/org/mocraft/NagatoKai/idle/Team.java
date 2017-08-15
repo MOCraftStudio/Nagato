@@ -46,11 +46,11 @@ public class Team {
         } catch (Exception e) {
             e.printStackTrace();
             instance.guiMain.logln("> Unknown Error Occurred! Retry...");
-            initTrapStatus();
+            instance.system.initor.initDetectWebAndFix();
         }
     }
 
-    public boolean hasTrapLeving() {
+    public boolean hasLeving() {
         for(int i = 1; i < 4; ++i) {
             if(instance.fleets[i].getStatus() == FleetStatus.Leving) {
                 return true;
@@ -59,7 +59,7 @@ public class Team {
         return false;
     }
 
-    public boolean hasTrapBacked() {
+    public boolean hasBacked() {
         for(int i = 1; i < 4; ++i) {
             if(instance.fleets[i].getStatus() == FleetStatus.Backed) {
                 return true;
@@ -68,7 +68,7 @@ public class Team {
         return false;
     }
 
-    public boolean hasTrapNeedLevy() {
+    public boolean hasNeedLevy() {
         for(int i = 1; i < 4; ++i) {
             if(instance.fleets[i].getStatus() == FleetStatus.Resting && instance.guiMain.getGuiLevy().getTarget(i) != 0) {
                 return true;
@@ -77,7 +77,7 @@ public class Team {
         return false;
     }
 
-    public boolean hasTrapNeedSurply() {
+    public boolean hasNeedSurply() {
         for(int i = 0; i < 4; ++i) {
             if(instance.fleets[i].getStatus() == FleetStatus.NeedSurply) {
                 return true;
